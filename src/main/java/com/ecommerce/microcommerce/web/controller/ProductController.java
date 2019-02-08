@@ -3,6 +3,7 @@ package com.ecommerce.microcommerce.web.controller;
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
+import com.ecommerce.microcommerce.web.exceptions.ProduitGratuitException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -31,7 +32,6 @@ public class ProductController {
 
 
     //Récupérer la liste des produits
-
     @RequestMapping(value = "/Produits", method = RequestMethod.GET)
 
     public MappingJacksonValue listeProduits() {
@@ -64,12 +64,17 @@ public class ProductController {
     }
 
 
-
-
     //ajouter un produit
     @PostMapping(value = "/Produits")
-
     public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
+        /*
+        Partie 3 - Validation du prix de vente
+
+        Si le prix de vente est de 0, lancez une exception du nom de  ProduitGratuitException
+        qui retournera le bon code HTTP pour ce cas avec un message explicatif que vous définirez.
+         */
+        if(product.getPrix() == 0)
+            throw new ProduitGratuitException("Le produit saisi a un prix de vente de 0.");
 
         Product productAdded =  productDao.save(product);
 
