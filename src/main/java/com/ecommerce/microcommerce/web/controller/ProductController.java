@@ -16,7 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Api( description="API pour es opérations CRUD sur les produits.")
@@ -95,6 +97,22 @@ public class ProductController {
         productDao.save(product);
     }
 
+    /*
+    Partie 1 - Affichage de la marge
+    La méthode calculerMargeProduit doit répondre à  une requête GET
+    sur l’URI   /AdminProduits. Les données doivent être récupérées
+    depuis la base de données mises en place dans le projet.
+ */
+    @ApiOperation(value = "Affichage de la marge sur le produit")
+    @GetMapping(value = "/AdminProduits")
+    public Map<String, String>   calculerMargeProduit() {
+
+        Map<String, String> results = new HashMap<String, String>();
+        for (Product product : productDao.findAll()) {
+            results.put(product.toString(), Integer.toString(product.getPrix()-product.getPrixAchat()));
+        }
+        return results;
+    }
 
     //Pour les tests
     @GetMapping(value = "test/produits/{prix}")
