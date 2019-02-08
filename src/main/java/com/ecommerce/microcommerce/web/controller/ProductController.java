@@ -114,6 +114,20 @@ public class ProductController {
         return results;
     }
 
+    /*
+    Partie 2 - Tri par ordre alphabétique
+    La méthode trierProduitsParOrdreAlphabetique trie les Produits Par Ordre Alphabetique
+    et doit impérativement faire appel
+    à une méthode que vous allez ajouter dans ProductDao  qui utilise le nommage
+    conventionné de Spring Data JPA pour générer automatiquement les requêtes
+ */
+    @ApiOperation(value = "Tri par ordre alphabétique")
+    @GetMapping(value = "/TrierProduits")
+    public List<Product>  trierProduitsParOrdreAlphabetique() {
+        return productDao.findAllByOrderByNomAsc();
+    }
+
+
     //Pour les tests
     @GetMapping(value = "test/produits/{prix}")
     public List<Product>  testeDeRequetes(@PathVariable int prix) {
